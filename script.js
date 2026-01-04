@@ -1,4 +1,4 @@
-// Giovanni's Fitness Blog - JavaScript
+// Dwayne's Fitness Blog - JavaScript
 // Handles navigation, animations, and interactivity
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initNavbar();
     initScrollAnimations();
     initMobileMenu();
+    initWorkoutTabs();
 });
 
 // ============================================
@@ -47,7 +48,7 @@ function initMobileMenu() {
         menuBtn.addEventListener('click', () => {
             const isOpen = navLinks.classList.toggle('mobile-open');
             menuBtn.classList.toggle('active');
-            
+
             // Animate hamburger to X
             const spans = menuBtn.querySelectorAll('span');
             if (isOpen) {
@@ -76,11 +77,56 @@ function initMobileMenu() {
 }
 
 // ============================================
+// Workout Tabs
+// ============================================
+function initWorkoutTabs() {
+    const tabs = document.querySelectorAll('.workout-tab');
+    const workoutCards = document.querySelectorAll('.workout-card');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Remove active from all tabs
+            tabs.forEach(t => t.classList.remove('active'));
+            // Add active to clicked tab
+            tab.classList.add('active');
+
+            // Hide all workout cards
+            workoutCards.forEach(card => {
+                card.classList.add('hidden');
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+            });
+
+            // Show selected workout card
+            const targetId = tab.getAttribute('data-workout');
+            const targetCard = document.getElementById(targetId);
+            if (targetCard) {
+                targetCard.classList.remove('hidden');
+                // Animate in
+                setTimeout(() => {
+                    targetCard.style.opacity = '1';
+                    targetCard.style.transform = 'translateY(0)';
+                }, 50);
+            }
+        });
+    });
+
+    // Initialize first card styles
+    const firstCard = document.getElementById('push1');
+    if (firstCard) {
+        firstCard.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+    }
+    workoutCards.forEach(card => {
+        card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+    });
+}
+
+// ============================================
 // Scroll Animations (Intersection Observer)
 // ============================================
 function initScrollAnimations() {
     const animatedElements = document.querySelectorAll(
-        '.section-header, .about-content, .workout-card, .blog-card, .quote'
+        '.section-header, .about-content, .workout-card:not(.hidden), .blog-card, .quote, .pr-goals'
     );
 
     const observerOptions = {
@@ -154,17 +200,17 @@ function initScrollAnimations() {
 // Smooth Scroll for Anchor Links
 // ============================================
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
+    anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const targetId = this.getAttribute('href');
-        
+
         if (targetId === '#') return;
-        
+
         const targetElement = document.querySelector(targetId);
         if (targetElement) {
             const navbarHeight = document.querySelector('.navbar').offsetHeight;
             const targetPosition = targetElement.offsetTop - navbarHeight - 20;
-            
+
             window.scrollTo({
                 top: targetPosition,
                 behavior: 'smooth'
@@ -174,26 +220,24 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // ============================================
-// Add dynamic quote rotation (bonus feature)
+// Dwayne's Motivational Quotes
 // ============================================
 const quotes = [
-    "The only bad workout is the one that didn't happen.",
-    "Your body can stand almost anything. It's your mind you have to convince.",
-    "The pain you feel today will be the strength you feel tomorrow.",
-    "Success isn't given. It's earned in the gym.",
-    "Be stronger than your excuses.",
-    "The gym is my therapy."
+    "Stop when you're done, not when you're tired.",
+    "Your mind is the only limit.",
+    "I can do all things through Christ who strengthens me.",
+    "You need discipline, not motivation."
 ];
 
 function rotateQuote() {
     const quoteElement = document.querySelector('.quote p');
     if (quoteElement) {
         let currentIndex = 0;
-        
+
         setInterval(() => {
             quoteElement.style.opacity = '0';
             quoteElement.style.transform = 'translateY(10px)';
-            
+
             setTimeout(() => {
                 currentIndex = (currentIndex + 1) % quotes.length;
                 quoteElement.textContent = quotes[currentIndex];
@@ -201,7 +245,7 @@ function rotateQuote() {
                 quoteElement.style.transform = 'translateY(0)';
             }, 500);
         }, 8000);
-        
+
         // Add transition styles
         quoteElement.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
     }

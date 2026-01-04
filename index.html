@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Giovanni's Fitness Journey - Workout logs, progress updates, and gym motivation">
-    <title>Giovanni | Fitness Journey</title>
+    <meta name="description" content="Dwayne's Fitness Journey - Workout logs, progress updates, and gym motivation">
+    <title>Dwayne | Fitness Journey</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="#" class="logo">GIO<span class="accent">.</span></a>
+            <a href="#" class="logo">DWAYNE<span class="accent">.</span></a>
             <ul class="nav-links">
                 <li><a href="#about">About</a></li>
                 <li><a href="#workouts">Workouts</a></li>
@@ -33,12 +36,13 @@
     <header class="hero">
         <div class="hero-bg"></div>
         <div class="hero-content">
-            <p class="hero-tagline">Fitness • Discipline • Growth</p>
+            <p class="hero-tagline">Discipline • Strength • Growth</p>
             <h1 class="hero-title">
-                GIOVANNI'S
+                DWAYNE'S
                 <span class="hero-highlight">FITNESS JOURNEY</span>
             </h1>
-            <p class="hero-subtitle">Documenting every rep, every set, every victory. Welcome to my grind.</p>
+            <p class="hero-subtitle">Chasing 190. Building strength. Documenting every rep, every set, every victory.
+            </p>
             <div class="hero-cta">
                 <a href="#workouts" class="btn btn-primary">Latest Workout</a>
                 <a href="#about" class="btn btn-secondary">About Me</a>
@@ -55,7 +59,7 @@
         <div class="container">
             <blockquote class="quote">
                 <span class="quote-mark">"</span>
-                <p>The only bad workout is the one that didn't happen.</p>
+                <p>Stop when you're done, not when you're tired.</p>
                 <span class="quote-mark quote-mark-end">"</span>
             </blockquote>
         </div>
@@ -66,7 +70,7 @@
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">Who is</span>
-                <h2 class="section-title">GIOVANNI</h2>
+                <h2 class="section-title">DWAYNE</h2>
             </div>
             <div class="about-content">
                 <div class="about-image">
@@ -76,21 +80,25 @@
                     <div class="image-accent"></div>
                 </div>
                 <div class="about-text">
-                    <h3>Passion Meets Discipline</h3>
-                    <p>Hey, I'm Gio! Fitness isn't just a hobby for me—it's a lifestyle. Every day in the gym is a chance to become a better version of myself.</p>
-                    <p>This blog is where I share my journey: the wins, the struggles, the PRs, and everything in between. Whether you're here for workout inspiration or just curious about my grind, welcome to the team.</p>
+                    <h3>Determined & Chill</h3>
+                    <p>I'm a determined guy who also likes to stay chill. I've been training for about 7-8 months now,
+                        focused on losing weight and gaining muscle. My goal? Drop down to 190 while getting stronger
+                        and more athletic.</p>
+                    <p>Shoutout to Coach George and fitness influencers like David Laid and Sam Sulek for getting me
+                        into the gym. Now I'm chasing PRs: 225 bench, 315 squat, 405 deadlift. The grind never stops.
+                    </p>
                     <div class="about-stats">
                         <div class="stat">
-                            <span class="stat-number">5x</span>
+                            <span class="stat-number">5-6x</span>
                             <span class="stat-label">Weekly Sessions</span>
                         </div>
                         <div class="stat">
-                            <span class="stat-number">2+</span>
-                            <span class="stat-label">Years Training</span>
+                            <span class="stat-number">PPL</span>
+                            <span class="stat-label">Push Pull Legs</span>
                         </div>
                         <div class="stat">
-                            <span class="stat-number">∞</span>
-                            <span class="stat-label">Dedication</span>
+                            <span class="stat-number">190</span>
+                            <span class="stat-label">Goal Weight</span>
                         </div>
                     </div>
                 </div>
@@ -102,44 +110,214 @@
     <section id="workouts" class="workouts-section">
         <div class="container">
             <div class="section-header">
-                <span class="section-tag">Today's Grind</span>
-                <h2 class="section-title">LATEST WORKOUT</h2>
+                <span class="section-tag">The Split</span>
+                <h2 class="section-title">MY WORKOUTS</h2>
             </div>
-            <div class="workout-card">
+
+            <!-- Workout Tabs -->
+            <div class="workout-tabs">
+                <button class="workout-tab active" data-workout="push1">Push Day 1</button>
+                <button class="workout-tab" data-workout="push2">Push Day 2</button>
+                <button class="workout-tab" data-workout="pull">Pull Day</button>
+                <button class="workout-tab" data-workout="legs">Leg Day</button>
+            </div>
+
+            <!-- Push Day 1 -->
+            <div class="workout-card" id="push1">
                 <div class="workout-header">
                     <div class="workout-type">
                         <span class="workout-icon">🏋️</span>
                         <div>
-                            <h3>Push Day</h3>
-                            <span class="workout-date">January 4, 2026</span>
+                            <h3>Push Day 1</h3>
+                            <span class="workout-date">Chest, Shoulders & Triceps</span>
                         </div>
                     </div>
-                    <span class="workout-duration">1hr 15min</span>
+                    <span class="workout-duration">~1hr</span>
                 </div>
                 <div class="workout-exercises">
                     <div class="exercise">
-                        <span class="exercise-name">Bench Press</span>
-                        <span class="exercise-details">4 sets × 8 reps @ 185 lbs</span>
-                    </div>
-                    <div class="exercise">
                         <span class="exercise-name">Incline Dumbbell Press</span>
-                        <span class="exercise-details">3 sets × 10 reps @ 65 lbs</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
                     </div>
                     <div class="exercise">
-                        <span class="exercise-name">Overhead Press</span>
-                        <span class="exercise-details">4 sets × 8 reps @ 115 lbs</span>
+                        <span class="exercise-name">Bench Press</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
                     </div>
                     <div class="exercise">
-                        <span class="exercise-name">Cable Flyes</span>
-                        <span class="exercise-details">3 sets × 12 reps</span>
+                        <span class="exercise-name">Cable Fly (Downward)</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
                     </div>
                     <div class="exercise">
-                        <span class="exercise-name">Tricep Pushdowns</span>
-                        <span class="exercise-details">3 sets × 15 reps</span>
+                        <span class="exercise-name">Cable Front Raises</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
+                    </div>
+                    <div class="exercise">
+                        <span class="exercise-name">Cable Lateral Raises</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
+                    </div>
+                    <div class="exercise">
+                        <span class="exercise-name">Cable Rear Delt Fly</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
+                    </div>
+                    <div class="exercise">
+                        <span class="exercise-name">Single Arm Tricep Pushdown</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
+                    </div>
+                    <div class="exercise">
+                        <span class="exercise-name">Overhead Extensions</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
+                    </div>
+                    <div class="exercise">
+                        <span class="exercise-name">JM Press</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
                     </div>
                 </div>
-                <div class="workout-notes">
-                    <p><strong>Notes:</strong> Felt strong today! PR on bench—finally hit 185 for a clean set of 8. Shoulders were a bit tight, so I kept OHP weight moderate. Great pump overall. 💪</p>
+            </div>
+
+            <!-- Push Day 2 -->
+            <div class="workout-card hidden" id="push2">
+                <div class="workout-header">
+                    <div class="workout-type">
+                        <span class="workout-icon">💥</span>
+                        <div>
+                            <h3>Push Day 2</h3>
+                            <span class="workout-date">Chest, Shoulders & Triceps</span>
+                        </div>
+                    </div>
+                    <span class="workout-duration">~1hr</span>
+                </div>
+                <div class="workout-exercises">
+                    <div class="exercise">
+                        <span class="exercise-name">Incline Barbell Bench</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
+                    </div>
+                    <div class="exercise">
+                        <span class="exercise-name">Push Ups</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
+                    </div>
+                    <div class="exercise">
+                        <span class="exercise-name">Decline Chest Press</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
+                    </div>
+                    <div class="exercise">
+                        <span class="exercise-name">Military Press</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
+                    </div>
+                    <div class="exercise">
+                        <span class="exercise-name">Seated Lateral Raises</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
+                    </div>
+                    <div class="exercise">
+                        <span class="exercise-name">Machine Rear Delt</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
+                    </div>
+                    <div class="exercise">
+                        <span class="exercise-name">Tricep Push Machine</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
+                    </div>
+                    <div class="exercise">
+                        <span class="exercise-name">Close Grip Bench</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
+                    </div>
+                    <div class="exercise">
+                        <span class="exercise-name">Skull Crushers</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pull Day -->
+            <div class="workout-card hidden" id="pull">
+                <div class="workout-header">
+                    <div class="workout-type">
+                        <span class="workout-icon">🔥</span>
+                        <div>
+                            <h3>Pull Day</h3>
+                            <span class="workout-date">Back & Biceps</span>
+                        </div>
+                    </div>
+                    <span class="workout-duration">~1hr</span>
+                </div>
+                <div class="workout-exercises">
+                    <div class="exercise">
+                        <span class="exercise-name">Lat Pulldown</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
+                    </div>
+                    <div class="exercise">
+                        <span class="exercise-name">T-Bar Row</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
+                    </div>
+                    <div class="exercise">
+                        <span class="exercise-name">Barbell Rows</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
+                    </div>
+                    <div class="exercise">
+                        <span class="exercise-name">Deadlift</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
+                    </div>
+                    <div class="exercise">
+                        <span class="exercise-name">Cable Curls</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
+                    </div>
+                    <div class="exercise">
+                        <span class="exercise-name">Dumbbell Curls</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
+                    </div>
+                    <div class="exercise">
+                        <span class="exercise-name">Cable Hammer Curls</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leg Day -->
+            <div class="workout-card hidden" id="legs">
+                <div class="workout-header">
+                    <div class="workout-type">
+                        <span class="workout-icon">🦵</span>
+                        <div>
+                            <h3>Leg Day</h3>
+                            <span class="workout-date">Quads, Hamstrings & Glutes</span>
+                        </div>
+                    </div>
+                    <span class="workout-duration">~45min</span>
+                </div>
+                <div class="workout-exercises">
+                    <div class="exercise">
+                        <span class="exercise-name">Barbell Squats</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
+                    </div>
+                    <div class="exercise">
+                        <span class="exercise-name">Leg Extensions</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
+                    </div>
+                    <div class="exercise">
+                        <span class="exercise-name">Romanian Deadlift (RDL)</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
+                    </div>
+                    <div class="exercise">
+                        <span class="exercise-name">Hamstring Curls</span>
+                        <span class="exercise-details">3 sets × 10 reps</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PR Goals -->
+            <div class="pr-goals">
+                <h4>PR Goals I'm Chasing</h4>
+                <div class="pr-list">
+                    <div class="pr-item">
+                        <span class="pr-lift">Bench</span>
+                        <span class="pr-weight">225 lbs</span>
+                    </div>
+                    <div class="pr-item">
+                        <span class="pr-lift">Squat</span>
+                        <span class="pr-weight">315 lbs</span>
+                    </div>
+                    <div class="pr-item">
+                        <span class="pr-lift">Deadlift</span>
+                        <span class="pr-weight">405 lbs</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -158,43 +336,42 @@
                         <span class="blog-category">Progress</span>
                     </div>
                     <div class="blog-card-content">
-                        <h3>3-Month Transformation Update</h3>
-                        <p>Breaking down my journey so far—what worked, what didn't, and the lessons learned along the way.</p>
+                        <h3>The Road to 190: My Transformation Journey</h3>
+                        <p>Breaking down my journey so far—the mindset shifts, the early mornings, and what 7 months of
+                            consistency looks like.</p>
                         <div class="blog-meta">
-                            <span>Dec 28, 2025</span>
+                            <span>Coming Soon</span>
                             <span>5 min read</span>
                         </div>
                     </div>
                 </article>
                 <article class="blog-card">
                     <div class="blog-card-image">
-                        <span class="blog-category">Tips</span>
+                        <span class="blog-category">Training</span>
                     </div>
                     <div class="blog-card-content">
-                        <h3>My Go-To Pre-Workout Routine</h3>
-                        <p>The warm-up routine that keeps me injury-free and ready to lift heavy.</p>
+                        <h3>Why I Run Push Pull Legs (2x)</h3>
+                        <p>Breaking down my PPL split and why hitting each muscle group twice a week works for my goals.
+                        </p>
                         <div class="blog-meta">
-                            <span>Dec 20, 2025</span>
-                            <span>3 min read</span>
+                            <span>Coming Soon</span>
+                            <span>4 min read</span>
                         </div>
                     </div>
                 </article>
                 <article class="blog-card">
                     <div class="blog-card-image">
-                        <span class="blog-category">Nutrition</span>
+                        <span class="blog-category">Mindset</span>
                     </div>
                     <div class="blog-card-content">
-                        <h3>What I Eat in a Day</h3>
-                        <p>A full breakdown of my current meal plan for gaining lean muscle.</p>
+                        <h3>Discipline Over Motivation</h3>
+                        <p>Why I show up even when I don't feel like it, and how discipline changed my life.</p>
                         <div class="blog-meta">
-                            <span>Dec 15, 2025</span>
-                            <span>4 min read</span>
+                            <span>Coming Soon</span>
+                            <span>3 min read</span>
                         </div>
                     </div>
                 </article>
-            </div>
-            <div class="blog-cta">
-                <a href="#" class="btn btn-primary">View All Posts</a>
             </div>
         </div>
     </section>
@@ -204,8 +381,8 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
-                    <a href="#" class="logo">GIO<span class="accent">.</span></a>
-                    <p>Documenting the grind, one workout at a time.</p>
+                    <a href="#" class="logo">DWAYNE<span class="accent">.</span></a>
+                    <p>Chasing PRs, one rep at a time.</p>
                 </div>
                 <div class="footer-links">
                     <h4>Quick Links</h4>
@@ -225,11 +402,12 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 Giovanni. All rights reserved. Built with 💪</p>
+                <p>&copy; 2026 Dwayne. All rights reserved. Built with 💪</p>
             </div>
         </div>
     </footer>
 
     <script src="script.js"></script>
 </body>
+
 </html>
