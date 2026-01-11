@@ -1,5 +1,10 @@
 [build]
   publish = "."
+  functions = "netlify/functions"
+
+# Netlify Functions settings
+[functions]
+  node_bundler = "esbuild"
 
 # Headers for security
 [[headers]]
@@ -8,3 +13,9 @@
     X-Frame-Options = "DENY"
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
+
+# Redirect API calls to functions
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200

@@ -1,35 +1,1504 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="noindex" />
-    <title>Content Manager | Dwayne's Fitness Blog</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Admin | Dwayne Fitness</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
+        /* ========================================
+           CSS Variables & Reset
+           ======================================== */
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #141414;
+            --bg-tertiary: #1a1a1a;
+            --bg-card: #1e1e1e;
+            --bg-elevated: #252525;
+
+            --accent: #FF6B35;
+            --accent-light: #FF8F65;
+            --accent-dark: #CC5629;
+            --accent-glow: rgba(255, 107, 53, 0.3);
+
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+
+            --success: #22c55e;
+            --warning: #eab308;
+            --error: #ef4444;
+
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
+
+            --safe-area-top: env(safe-area-inset-top, 0px);
+            --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        * {
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ========================================
+           App Container
+           ======================================== */
+        .app {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding-top: var(--safe-area-top);
+            padding-bottom: var(--safe-area-bottom);
+        }
+
+        /* ========================================
+           Login Screen
+           ======================================== */
+        .login-screen {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .login-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 48px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 360px;
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            padding: 32px 24px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .login-card h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .login-card p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 16px;
+            font-size: 1rem;
+            font-family: inherit;
+            background: var(--bg-tertiary);
+            border: 2px solid transparent;
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-glow);
+        }
+
+        .input-group input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 16px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: inherit;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            color: white;
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px var(--accent-glow);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-elevated);
+        }
+
+        .login-message {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            text-align: center;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-message.success {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .login-message.error {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--error);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        /* ========================================
+           Dashboard
+           ======================================== */
+        .dashboard {
+            height: 100%;
+            display: none;
+            flex-direction: column;
+        }
+
+        .dashboard.active {
+            display: flex;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--bg-tertiary);
+        }
+
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .header-logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .icon-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--bg-tertiary);
+            border: none;
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .icon-btn:hover {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .welcome-section {
+            margin-bottom: 24px;
+        }
+
+        .welcome-section h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .welcome-section p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Content Cards Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .content-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+            border: 1px solid transparent;
+        }
+
+        .content-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--bg-elevated);
+        }
+
+        .content-card:active {
+            transform: translateY(-2px);
+        }
+
+        .content-card-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .content-card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .content-card-desc {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Full width card for blog */
+        .content-card.full-width {
+            grid-column: span 2;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .content-card.full-width .content-card-icon {
+            margin-bottom: 0;
+            font-size: 2.5rem;
+        }
+
+        .content-card.full-width .content-card-info {
+            flex: 1;
+        }
+
+        /* ========================================
+           Editor Screen
+           ======================================== */
+        .editor-screen {
+            height: 100%;
+            display: none;
+            flex-direction: column;
+        }
+
+        .editor-screen.active {
+            display: flex;
+            animation: slideInRight 0.3s ease;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .editor-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--bg-tertiary);
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: none;
+            border: none;
+            color: var(--accent);
+            font-size: 1.5rem;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .editor-title {
+            flex: 1;
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        .save-btn {
+            padding: 10px 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            font-family: inherit;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .save-btn:hover {
+            background: var(--accent-light);
+        }
+
+        .save-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .editor-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 1rem;
+            font-family: inherit;
+            background: var(--bg-tertiary);
+            border: 2px solid transparent;
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-glow);
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .form-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 40px;
+        }
+
+        /* List Editor */
+        .list-editor {
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .list-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--bg-elevated);
+            animation: fadeIn 0.2s ease;
+        }
+
+        .list-item:last-child {
+            border-bottom: none;
+        }
+
+        .list-item-content {
+            flex: 1;
+            font-size: 0.9375rem;
+        }
+
+        .list-item-drag {
+            color: var(--text-muted);
+            cursor: grab;
+            font-size: 1.25rem;
+        }
+
+        .list-item-delete {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: none;
+            border: none;
+            color: var(--error);
+            font-size: 1.25rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+        }
+
+        .list-item-delete:hover {
+            opacity: 1;
+        }
+
+        .add-item-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 14px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            font-family: inherit;
+            background: none;
+            border: 2px dashed var(--bg-elevated);
+            border-radius: var(--radius-md);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 12px;
+        }
+
+        .add-item-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Stats Editor */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .stat-card {
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-card input {
+            width: 100%;
+            text-align: center;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-card input:focus {
+            outline: none;
+        }
+
+        .stat-card input.stat-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        /* Blog List */
+        .blog-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .blog-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .blog-item:hover {
+            background: var(--bg-elevated);
+        }
+
+        .blog-item-icon {
+            font-size: 1.5rem;
+        }
+
+        .blog-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .blog-item-title {
+            font-weight: 600;
+            font-size: 0.9375rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .blog-item-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .blog-item-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .blog-item-status.published {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--success);
+        }
+
+        .blog-item-status.draft {
+            background: rgba(234, 179, 8, 0.15);
+            color: var(--warning);
+        }
+
+        /* Workout Editor */
+        .workout-section {
+            margin-bottom: 24px;
+        }
+
+        .workout-section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            margin-bottom: 8px;
+        }
+
+        .workout-section-icon {
+            font-size: 1.5rem;
+        }
+
+        .workout-section-info {
+            flex: 1;
+        }
+
+        .workout-section-title {
+            font-weight: 600;
+        }
+
+        .workout-section-desc {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .workout-section-toggle {
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            transition: transform 0.2s ease;
+        }
+
+        .workout-section.open .workout-section-toggle {
+            transform: rotate(180deg);
+        }
+
+        .workout-exercises {
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            padding-left: 20px;
+        }
+
+        .workout-section.open .workout-exercises {
+            display: flex;
+        }
+
+        .exercise-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-sm);
+        }
+
+        .exercise-name {
+            flex: 1;
+            font-size: 0.875rem;
+        }
+
+        .exercise-details {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            bottom: calc(20px + var(--safe-area-bottom));
+            left: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .toast {
+            padding: 16px 20px;
+            background: var(--bg-elevated);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            animation: toastIn 0.3s ease;
+            pointer-events: auto;
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--error);
+        }
+
+        /* FAB */
+        .fab {
+            position: fixed;
+            bottom: calc(24px + var(--safe-area-bottom));
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.75rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px var(--accent-glow);
+            transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+            z-index: 100;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+        }
+
+        .fab:active {
+            transform: scale(0.95);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            .login-card {
+                padding: 40px 32px;
+            }
+
+            .main-content {
+                padding: 32px;
+                max-width: 800px;
+                margin: 0 auto;
+            }
+
+            .content-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .content-card.full-width {
+                grid-column: span 3;
+            }
         }
     </style>
 </head>
 
 <body>
-    <!-- Include Netlify Identity widget for auth -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <!-- Include Decap CMS (stable v2 version) -->
-    <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
+    <div class="app" id="app">
+        <!-- Login Screen -->
+        <div class="login-screen" id="loginScreen">
+            <div class="login-logo">DWAYNE.</div>
+            <p class="login-subtitle">Admin Panel</p>
+
+            <div class="login-card">
+                <h2>Welcome Back 💪</h2>
+                <p>Enter your email to receive a magic login link</p>
+
+                <form id="loginForm">
+                    <div class="input-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="your@email.com" required autocomplete="email">
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="loginBtn">
+                        Send Magic Link
+                    </button>
+                </form>
+
+                <div id="loginMessage" class="login-message" style="display: none;"></div>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div class="dashboard" id="dashboard">
+            <header class="header">
+                <div class="header-logo">DWAYNE.</div>
+                <div class="header-actions">
+                    <button class="icon-btn" id="refreshBtn" title="Refresh">🔄</button>
+                    <button class="icon-btn" id="logoutBtn" title="Logout">👋</button>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <section class="welcome-section">
+                    <h1>Hey, Dwayne!</h1>
+                    <p>What would you like to update today?</p>
+                </section>
+
+                <div class="content-grid">
+                    <div class="content-card" data-type="about">
+                        <div class="content-card-icon">💪</div>
+                        <div class="content-card-title">About Me</div>
+                        <div class="content-card-desc">Bio & stats</div>
+                    </div>
+
+                    <div class="content-card" data-type="quotes">
+                        <div class="content-card-icon">💬</div>
+                        <div class="content-card-title">Quotes</div>
+                        <div class="content-card-desc">Motivation</div>
+                    </div>
+
+                    <div class="content-card" data-type="workouts">
+                        <div class="content-card-icon">🏋️</div>
+                        <div class="content-card-title">Workouts</div>
+                        <div class="content-card-desc">Your splits</div>
+                    </div>
+
+                    <div class="content-card" data-type="site">
+                        <div class="content-card-icon">⚙️</div>
+                        <div class="content-card-title">Settings</div>
+                        <div class="content-card-desc">Site info</div>
+                    </div>
+
+                    <div class="content-card full-width" data-type="blog">
+                        <div class="content-card-icon">📝</div>
+                        <div class="content-card-info">
+                            <div class="content-card-title">Blog Posts</div>
+                            <div class="content-card-desc">Create and manage your articles</div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Editor Screen -->
+        <div class="editor-screen" id="editorScreen">
+            <header class="editor-header">
+                <button class="back-btn" id="backBtn">←</button>
+                <h2 class="editor-title" id="editorTitle">Edit Content</h2>
+                <button class="save-btn" id="saveBtn">Save</button>
+            </header>
+
+            <main class="editor-content" id="editorContent">
+                <!-- Dynamic content will be rendered here -->
+            </main>
+        </div>
+
+        <!-- FAB for new blog post -->
+        <button class="fab" id="fabBtn" style="display: none;">+</button>
+
+        <!-- Toast Container -->
+        <div class="toast-container" id="toastContainer"></div>
+    </div>
+
     <script>
-        // Redirect to home after login
-        if (window.netlifyIdentity) {
-            window.netlifyIdentity.on("init", user => {
-                if (!user) {
-                    window.netlifyIdentity.on("login", () => {
-                        document.location.href = "/admin/";
-                    });
-                }
+        // ========================================
+        // App State
+        // ========================================
+        const state = {
+            token: localStorage.getItem('admin_token'),
+            currentView: 'login', // login, dashboard, editor
+            currentEditor: null,
+            contentData: {},
+            contentSha: {},
+        };
+
+        // ========================================
+        // API Helpers
+        // ========================================
+        const API_BASE = '/api';
+
+        async function apiRequest(endpoint, options = {}) {
+            const headers = {
+                'Content-Type': 'application/json',
+                ...options.headers,
+            };
+
+            if (state.token) {
+                headers['Authorization'] = `Bearer ${state.token}`;
+            }
+
+            const response = await fetch(`${API_BASE}${endpoint}`, {
+                ...options,
+                headers,
             });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Request failed');
+            }
+
+            return data;
         }
+
+        // ========================================
+        // UI Helpers
+        // ========================================
+        function showView(viewName) {
+            state.currentView = viewName;
+
+            document.getElementById('loginScreen').style.display =
+                viewName === 'login' ? 'flex' : 'none';
+            document.getElementById('dashboard').classList.toggle('active',
+                viewName === 'dashboard');
+            document.getElementById('editorScreen').classList.toggle('active',
+                viewName === 'editor');
+            document.getElementById('fabBtn').style.display =
+                (viewName === 'dashboard' || (viewName === 'editor' && state.currentEditor === 'blog'))
+                    ? 'flex' : 'none';
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'toastIn 0.3s ease reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function setLoading(element, loading, text = 'Loading...') {
+            if (loading) {
+                element.disabled = true;
+                element.dataset.originalText = element.innerHTML;
+                element.innerHTML = `<span class="spinner"></span> ${text}`;
+            } else {
+                element.disabled = false;
+                element.innerHTML = element.dataset.originalText || element.innerHTML;
+            }
+        }
+
+        // ========================================
+        // Authentication
+        // ========================================
+        async function checkAuth() {
+            if (!state.token) {
+                showView('login');
+                return false;
+            }
+
+            try {
+                await apiRequest('/auth/me');
+                showView('dashboard');
+                return true;
+            } catch (error) {
+                state.token = null;
+                localStorage.removeItem('admin_token');
+                showView('login');
+                return false;
+            }
+        }
+
+        async function requestMagicLink(email) {
+            const loginBtn = document.getElementById('loginBtn');
+            const messageEl = document.getElementById('loginMessage');
+
+            setLoading(loginBtn, true, 'Sending...');
+
+            try {
+                const data = await apiRequest('/auth/request', {
+                    method: 'POST',
+                    body: JSON.stringify({ email }),
+                });
+
+                messageEl.className = 'login-message success';
+                messageEl.textContent = '✨ Check your email for the login link!';
+                messageEl.style.display = 'block';
+
+                // In dev mode, show the link
+                if (data.devLink) {
+                    console.log('Dev link:', data.devLink);
+                    messageEl.innerHTML += `<br><small style="opacity:0.7">Dev: <a href="${data.devLink}" style="color:inherit">Click here</a></small>`;
+                }
+            } catch (error) {
+                messageEl.className = 'login-message error';
+                messageEl.textContent = error.message;
+                messageEl.style.display = 'block';
+            } finally {
+                setLoading(loginBtn, false);
+            }
+        }
+
+        async function verifyToken(token) {
+            try {
+                const data = await apiRequest('/auth/verify', {
+                    method: 'POST',
+                    body: JSON.stringify({ token }),
+                });
+
+                state.token = data.token;
+                localStorage.setItem('admin_token', data.token);
+                showView('dashboard');
+                showToast('Welcome back! 💪');
+            } catch (error) {
+                showToast(error.message, 'error');
+                showView('login');
+            }
+        }
+
+        function logout() {
+            state.token = null;
+            localStorage.removeItem('admin_token');
+            showView('login');
+            showToast('See you next time!');
+        }
+
+        // ========================================
+        // Content Loading
+        // ========================================
+        async function loadContent(type) {
+            try {
+                const data = await apiRequest(`/content/${type}`);
+                state.contentData[type] = data.data || data;
+                state.contentSha[type] = data.sha;
+                return data;
+            } catch (error) {
+                showToast(`Failed to load ${type}: ${error.message}`, 'error');
+                return null;
+            }
+        }
+
+        async function saveContent(type, data) {
+            const saveBtn = document.getElementById('saveBtn');
+            setLoading(saveBtn, true, 'Saving...');
+
+            try {
+                await apiRequest(`/content/${type}`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ data, sha: state.contentSha[type] }),
+                });
+
+                showToast('Saved successfully! 🎉');
+                state.contentData[type] = data;
+            } catch (error) {
+                showToast(`Failed to save: ${error.message}`, 'error');
+            } finally {
+                setLoading(saveBtn, false);
+            }
+        }
+
+        // ========================================
+        // Editor Renderers
+        // ========================================
+        const editors = {
+            about: {
+                title: 'Edit About',
+                render: (data) => `
+                    <div class="form-group">
+                        <label>Section Title</label>
+                        <input type="text" id="aboutTitle" value="${data.title || ''}" placeholder="e.g., Determined & Chill">
+                    </div>
+                    <div class="form-group">
+                        <label>Bio</label>
+                        <textarea id="aboutBio" placeholder="Write about yourself...">${data.bio || ''}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Stats</label>
+                        <div class="stats-grid">
+                            ${(data.stats || []).map((stat, i) => `
+                                <div class="stat-card">
+                                    <input type="text" value="${stat.number || ''}" data-stat="${i}" data-field="number">
+                                    <input type="text" class="stat-label" value="${stat.label || ''}" data-stat="${i}" data-field="label">
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `,
+                getData: () => {
+                    const stats = [];
+                    document.querySelectorAll('.stat-card').forEach((card, i) => {
+                        stats.push({
+                            number: card.querySelector('[data-field="number"]').value,
+                            label: card.querySelector('[data-field="label"]').value,
+                        });
+                    });
+                    return {
+                        ...state.contentData.about,
+                        title: document.getElementById('aboutTitle').value,
+                        bio: document.getElementById('aboutBio').value,
+                        stats,
+                    };
+                },
+            },
+
+            quotes: {
+                title: 'Edit Quotes',
+                render: (data) => {
+                    const quotes = data.quotes || [];
+                    return `
+                        <div class="form-group">
+                            <label>Motivational Quotes</label>
+                            <div class="list-editor" id="quotesList">
+                                ${quotes.map((q, i) => `
+                                    <div class="list-item" data-index="${i}">
+                                        <span class="list-item-drag">⋮⋮</span>
+                                        <input type="text" class="list-item-content" value="${q.text || q}" placeholder="Enter a quote...">
+                                        <button class="list-item-delete" data-index="${i}">×</button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <button class="add-item-btn" id="addQuoteBtn">+ Add Quote</button>
+                        </div>
+                    `;
+                },
+                init: () => {
+                    document.getElementById('addQuoteBtn').addEventListener('click', () => {
+                        const list = document.getElementById('quotesList');
+                        const index = list.children.length;
+                        const item = document.createElement('div');
+                        item.className = 'list-item';
+                        item.dataset.index = index;
+                        item.innerHTML = `
+                            <span class="list-item-drag">⋮⋮</span>
+                            <input type="text" class="list-item-content" value="" placeholder="Enter a quote...">
+                            <button class="list-item-delete" data-index="${index}">×</button>
+                        `;
+                        list.appendChild(item);
+                        item.querySelector('input').focus();
+                    });
+
+                    document.getElementById('quotesList').addEventListener('click', (e) => {
+                        if (e.target.classList.contains('list-item-delete')) {
+                            e.target.closest('.list-item').remove();
+                        }
+                    });
+                },
+                getData: () => {
+                    const quotes = [];
+                    document.querySelectorAll('#quotesList .list-item-content').forEach(input => {
+                        if (input.value.trim()) {
+                            quotes.push({ text: input.value.trim() });
+                        }
+                    });
+                    return { quotes };
+                },
+            },
+
+            site: {
+                title: 'Site Settings',
+                render: (data) => `
+                    <div class="form-group">
+                        <label>Site Title</label>
+                        <input type="text" id="siteTitle" value="${data.title || ''}" placeholder="Dwayne | Fitness Journey">
+                    </div>
+                    <div class="form-group">
+                        <label>SEO Description</label>
+                        <textarea id="siteDesc" placeholder="Description for search engines...">${data.description || ''}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Hero Tagline</label>
+                        <input type="text" id="heroTagline" value="${data.tagline || ''}" placeholder="Discipline • Strength • Growth">
+                    </div>
+                    <div class="form-group">
+                        <label>Hero Title</label>
+                        <input type="text" id="heroTitle" value="${data.heroTitle || ''}" placeholder="DWAYNE'S">
+                    </div>
+                    <div class="form-group">
+                        <label>Hero Highlight</label>
+                        <input type="text" id="heroHighlight" value="${data.heroHighlight || ''}" placeholder="FITNESS JOURNEY">
+                    </div>
+                    <div class="form-group">
+                        <label>Hero Subtitle</label>
+                        <textarea id="heroSubtitle" placeholder="Your hero subtitle...">${data.heroSubtitle || ''}</textarea>
+                    </div>
+                `,
+                getData: () => ({
+                    ...state.contentData.site,
+                    title: document.getElementById('siteTitle').value,
+                    description: document.getElementById('siteDesc').value,
+                    tagline: document.getElementById('heroTagline').value,
+                    heroTitle: document.getElementById('heroTitle').value,
+                    heroHighlight: document.getElementById('heroHighlight').value,
+                    heroSubtitle: document.getElementById('heroSubtitle').value,
+                }),
+            },
+
+            workouts: {
+                title: 'Edit Workouts',
+                render: (data) => {
+                    const workouts = data.workouts || [];
+                    return `
+                        <div class="form-group">
+                            <label>PR Goals</label>
+                            <div class="list-editor" id="prGoalsList">
+                                ${(data.prGoals || []).map((pr, i) => `
+                                    <div class="list-item" data-index="${i}">
+                                        <input type="text" class="list-item-content" value="${pr.lift || ''}" placeholder="Lift" style="flex:1">
+                                        <input type="text" value="${pr.weight || ''}" placeholder="Weight" style="width:100px">
+                                        <button class="list-item-delete">×</button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <button class="add-item-btn" id="addPrBtn">+ Add PR Goal</button>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Workout Splits</label>
+                            ${workouts.map((workout, i) => `
+                                <div class="workout-section" data-workout="${i}">
+                                    <div class="workout-section-header">
+                                        <span class="workout-section-icon">${workout.icon || '🏋️'}</span>
+                                        <div class="workout-section-info">
+                                            <div class="workout-section-title">${workout.name || 'Workout'}</div>
+                                            <div class="workout-section-desc">${workout.description || ''}</div>
+                                        </div>
+                                        <span class="workout-section-toggle">▼</span>
+                                    </div>
+                                    <div class="workout-exercises">
+                                        ${(workout.exercises || []).map((ex, j) => `
+                                            <div class="exercise-item">
+                                                <span class="exercise-name">${ex.name}</span>
+                                                <span class="exercise-details">${ex.sets} × ${ex.reps}</span>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                },
+                init: () => {
+                    document.querySelectorAll('.workout-section-header').forEach(header => {
+                        header.addEventListener('click', () => {
+                            header.parentElement.classList.toggle('open');
+                        });
+                    });
+                },
+                getData: () => state.contentData.workouts, // Read-only for now
+            },
+
+            blog: {
+                title: 'Blog Posts',
+                render: (data) => {
+                    const posts = data.posts || [];
+                    if (posts.length === 0) {
+                        return `
+                            <div style="text-align:center; padding:60px 20px; color:var(--text-secondary);">
+                                <div style="font-size:3rem; margin-bottom:16px;">📝</div>
+                                <p>No blog posts yet.<br>Tap the + button to create your first post!</p>
+                            </div>
+                        `;
+                    }
+                    return `
+                        <div class="blog-list">
+                            ${posts.map(post => `
+                                <div class="blog-item" data-slug="${post.slug}">
+                                    <div class="blog-item-icon">📄</div>
+                                    <div class="blog-item-info">
+                                        <div class="blog-item-title">${post.title || 'Untitled'}</div>
+                                        <div class="blog-item-meta">
+                                            <span>${post.category || 'No category'}</span>
+                                            <span>${post.readTime || ''}</span>
+                                        </div>
+                                    </div>
+                                    <span class="blog-item-status ${post.published === 'true' ? 'published' : 'draft'}">
+                                        ${post.published === 'true' ? 'Published' : 'Draft'}
+                                    </span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                },
+                init: () => {
+                    document.querySelectorAll('.blog-item').forEach(item => {
+                        item.addEventListener('click', () => {
+                            // TODO: Open blog post editor
+                            showToast('Blog post editor coming soon!');
+                        });
+                    });
+                },
+            },
+        };
+
+        async function openEditor(type) {
+            state.currentEditor = type;
+
+            const editorContent = document.getElementById('editorContent');
+            editorContent.innerHTML = '<div style="text-align:center;padding:40px;"><span class="spinner" style="width:32px;height:32px;border-width:3px;display:inline-block;"></span></div>';
+
+            showView('editor');
+
+            const editor = editors[type];
+            document.getElementById('editorTitle').textContent = editor.title;
+
+            // Load content
+            const data = await loadContent(type);
+
+            if (data) {
+                editorContent.innerHTML = editor.render(data.data || data);
+                if (editor.init) editor.init();
+            }
+        }
+
+        async function saveCurrentEditor() {
+            const type = state.currentEditor;
+            const editor = editors[type];
+
+            if (editor.getData) {
+                const data = editor.getData();
+                await saveContent(type, data);
+            }
+        }
+
+        // ========================================
+        // Event Listeners
+        // ========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check for magic link token in URL
+            const params = new URLSearchParams(window.location.search);
+            const token = params.get('token');
+
+            if (token) {
+                // Clear URL
+                window.history.replaceState({}, '', window.location.pathname);
+                verifyToken(token);
+            } else {
+                checkAuth();
+            }
+
+            // Login form
+            document.getElementById('loginForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('email').value;
+                requestMagicLink(email);
+            });
+
+            // Logout
+            document.getElementById('logoutBtn').addEventListener('click', logout);
+
+            // Refresh
+            document.getElementById('refreshBtn').addEventListener('click', () => {
+                location.reload();
+            });
+
+            // Content cards
+            document.querySelectorAll('.content-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const type = card.dataset.type;
+                    openEditor(type);
+                });
+            });
+
+            // Back button
+            document.getElementById('backBtn').addEventListener('click', () => {
+                state.currentEditor = null;
+                showView('dashboard');
+            });
+
+            // Save button
+            document.getElementById('saveBtn').addEventListener('click', saveCurrentEditor);
+
+            // FAB
+            document.getElementById('fabBtn').addEventListener('click', () => {
+                showToast('New post editor coming soon!');
+            });
+        });
     </script>
 </body>
 

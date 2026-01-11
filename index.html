@@ -410,21 +410,6 @@
     </footer>
 
     <script src="script.js"></script>
-
-    <!-- Netlify Identity Widget - handles invite/confirmation links -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <script>
-        // Redirect to admin after login from confirmation
-        if (window.netlifyIdentity) {
-            window.netlifyIdentity.on("init", user => {
-                if (!user) {
-                    window.netlifyIdentity.on("login", () => {
-                        document.location.href = "/admin/";
-                    });
-                }
-            });
-        }
-    </script>
 </body>
 
 </html>
