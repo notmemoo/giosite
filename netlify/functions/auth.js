@@ -7,7 +7,8 @@ const crypto = require('crypto');
 
 // Environment variables (set in Netlify dashboard)
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-in-production';
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || '';
+// Support multiple admin emails (comma-separated)
+const ADMIN_EMAILS = (process.env.ADMIN_EMAIL || '').split(',').map(e => e.trim().toLowerCase()).filter(Boolean);
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
 const SITE_URL = process.env.URL || 'http://localhost:8888';
 
@@ -145,8 +146,8 @@ exports.handler = async (event) => {
                 };
             }
 
-            // Check if email is authorized (only admin can log in)
-            if (ADMIN_EMAIL && email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+            // Check if email is authorized (only admin emails can log in)
+            if (ADMIN_EMAILS.length > 0 && !ADMIN_EMAILS.includes(email.toLowerCase())) {
                 // Don't reveal if email is valid or not for security
                 return {
                     statusCode: 200,
