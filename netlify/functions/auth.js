@@ -168,8 +168,8 @@ exports.handler = async (event) => {
                 headers: { ...corsHeaders, 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     message: 'If this email is registered, you will receive a login link.',
-                    // Include magic link in dev mode for testing
-                    ...(process.env.NODE_ENV !== 'production' && { devLink: magicLink }),
+                    // TEMPORARY: Show magic link for testing (remove after testing!)
+                    devLink: magicLink,
                 }),
             };
         }
