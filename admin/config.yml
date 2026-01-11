@@ -1,0 +1,139 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Netlify Identity for authentication
+local_backend: true
+
+# Media files storage
+media_folder: "images"
+public_folder: "/images"
+
+# Logo for admin panel
+logo_url: ""
+
+# Site URL (update after deployment)
+site_url: ""
+
+# Collections - what Dwayne can edit
+collections:
+  # ===== SITE SETTINGS =====
+  - name: "settings"
+    label: "⚙️ Site Settings"
+    delete: false
+    editor:
+      preview: false
+    files:
+      - name: "site"
+        label: "Site Info"
+        file: "content/site.yml"
+        fields:
+          - { name: "title", label: "Site Title", widget: "string" }
+          - { name: "description", label: "SEO Description", widget: "text" }
+          - { name: "logo", label: "Logo Text", widget: "string" }
+          - { name: "tagline", label: "Hero Tagline", widget: "string" }
+          - { name: "heroTitle", label: "Hero Title", widget: "string" }
+          - { name: "heroHighlight", label: "Hero Highlight Text", widget: "string" }
+          - { name: "heroSubtitle", label: "Hero Subtitle", widget: "text" }
+          - name: "social"
+            label: "Social Links"
+            widget: "object"
+            fields:
+              - { name: "instagram", label: "Instagram URL", widget: "string", required: false }
+              - { name: "tiktok", label: "TikTok URL", widget: "string", required: false }
+              - { name: "youtube", label: "YouTube URL", widget: "string", required: false }
+          - name: "footer"
+            label: "Footer"
+            widget: "object"
+            fields:
+              - { name: "tagline", label: "Footer Tagline", widget: "string" }
+              - { name: "copyright", label: "Copyright Text", widget: "string" }
+
+      - name: "about"
+        label: "About Me"
+        file: "content/about.yml"
+        fields:
+          - { name: "title", label: "Section Title", widget: "string" }
+          - { name: "bio", label: "Bio", widget: "markdown" }
+          - { name: "image", label: "Profile Image", widget: "image", required: false }
+          - { name: "imageAlt", label: "Image Alt Text", widget: "string", required: false }
+          - { name: "imagePlaceholder", label: "Placeholder Emoji (if no image)", widget: "string" }
+          - name: "stats"
+            label: "Stats"
+            widget: "list"
+            fields:
+              - { name: "number", label: "Number/Value", widget: "string" }
+              - { name: "label", label: "Label", widget: "string" }
+
+  # ===== QUOTES =====
+  - name: "quotes"
+    label: "💬 Motivational Quotes"
+    delete: false
+    editor:
+      preview: false
+    files:
+      - name: "quotes"
+        label: "Quotes List"
+        file: "content/quotes.yml"
+        fields:
+          - name: "quotes"
+            label: "Quotes"
+            widget: "list"
+            label_singular: "Quote"
+            fields:
+              - { name: "text", label: "Quote Text", widget: "string" }
+
+  # ===== WORKOUTS =====
+  - name: "workouts"
+    label: "💪 Workouts"
+    delete: false
+    editor:
+      preview: false
+    files:
+      - name: "workouts"
+        label: "Workout Splits"
+        file: "content/workouts.yml"
+        fields:
+          - name: "prGoals"
+            label: "PR Goals"
+            widget: "list"
+            label_singular: "Goal"
+            fields:
+              - { name: "lift", label: "Lift Name", widget: "string" }
+              - { name: "weight", label: "Target Weight", widget: "string" }
+          - name: "workouts"
+            label: "Workout Days"
+            widget: "list"
+            label_singular: "Workout"
+            fields:
+              - { name: "id", label: "ID (lowercase, no spaces)", widget: "string" }
+              - { name: "name", label: "Workout Name", widget: "string" }
+              - { name: "icon", label: "Icon Emoji", widget: "string" }
+              - { name: "description", label: "Description", widget: "string" }
+              - { name: "duration", label: "Duration", widget: "string" }
+              - name: "exercises"
+                label: "Exercises"
+                widget: "list"
+                label_singular: "Exercise"
+                fields:
+                  - { name: "name", label: "Exercise Name", widget: "string" }
+                  - { name: "sets", label: "Sets", widget: "number", value_type: "int" }
+                  - { name: "reps", label: "Reps", widget: "number", value_type: "int" }
+
+  # ===== BLOG POSTS =====
+  - name: "blog"
+    label: "📝 Blog Posts"
+    folder: "content/blog"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { name: "title", label: "Title", widget: "string" }
+      - { name: "date", label: "Date", widget: "datetime" }
+      - { name: "category", label: "Category", widget: "select", options: ["Progress", "Training", "Mindset", "Nutrition", "Lifestyle"] }
+      - { name: "excerpt", label: "Excerpt", widget: "text" }
+      - { name: "readTime", label: "Read Time", widget: "string", default: "5 min read" }
+      - { name: "featured", label: "Featured Post?", widget: "boolean", default: false }
+      - { name: "published", label: "Published?", widget: "boolean", default: false }
+      - { name: "body", label: "Content", widget: "markdown" }

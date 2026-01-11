@@ -1,0 +1,123 @@
+prGoals:
+  - lift: "Bench"
+    weight: "225 lbs"
+  - lift: "Squat"
+    weight: "315 lbs"
+  - lift: "Deadlift"
+    weight: "405 lbs"
+
+workouts:
+  - id: "push1"
+    name: "Push Day 1"
+    icon: "🏋️"
+    description: "Chest, Shoulders & Triceps"
+    duration: "~1hr"
+    exercises:
+      - name: "Incline Dumbbell Press"
+        sets: 3
+        reps: 10
+      - name: "Bench Press"
+        sets: 3
+        reps: 10
+      - name: "Cable Fly (Downward)"
+        sets: 3
+        reps: 10
+      - name: "Cable Front Raises"
+        sets: 3
+        reps: 10
+      - name: "Cable Lateral Raises"
+        sets: 3
+        reps: 10
+      - name: "Cable Rear Delt Fly"
+        sets: 3
+        reps: 10
+      - name: "Single Arm Tricep Pushdown"
+        sets: 3
+        reps: 10
+      - name: "Overhead Extensions"
+        sets: 3
+        reps: 10
+      - name: "JM Press"
+        sets: 3
+        reps: 10
+
+  - id: "push2"
+    name: "Push Day 2"
+    icon: "💥"
+    description: "Chest, Shoulders & Triceps"
+    duration: "~1hr"
+    exercises:
+      - name: "Incline Barbell Bench"
+        sets: 3
+        reps: 10
+      - name: "Push Ups"
+        sets: 3
+        reps: 10
+      - name: "Decline Chest Press"
+        sets: 3
+        reps: 10
+      - name: "Military Press"
+        sets: 3
+        reps: 10
+      - name: "Seated Lateral Raises"
+        sets: 3
+        reps: 10
+      - name: "Machine Rear Delt"
+        sets: 3
+        reps: 10
+      - name: "Tricep Push Machine"
+        sets: 3
+        reps: 10
+      - name: "Close Grip Bench"
+        sets: 3
+        reps: 10
+      - name: "Skull Crushers"
+        sets: 3
+        reps: 10
+
+  - id: "pull"
+    name: "Pull Day"
+    icon: "🔥"
+    description: "Back & Biceps"
+    duration: "~1hr"
+    exercises:
+      - name: "Lat Pulldown"
+        sets: 3
+        reps: 10
+      - name: "T-Bar Row"
+        sets: 3
+        reps: 10
+      - name: "Barbell Rows"
+        sets: 3
+        reps: 10
+      - name: "Deadlift"
+        sets: 3
+        reps: 10
+      - name: "Cable Curls"
+        sets: 3
+        reps: 10
+      - name: "Dumbbell Curls"
+        sets: 3
+        reps: 10
+      - name: "Cable Hammer Curls"
+        sets: 3
+        reps: 10
+
+  - id: "legs"
+    name: "Leg Day"
+    icon: "🦵"
+    description: "Quads, Hamstrings & Glutes"
+    duration: "~45min"
+    exercises:
+      - name: "Barbell Squats"
+        sets: 3
+        reps: 10
+      - name: "Leg Extensions"
+        sets: 3
+        reps: 10
+      - name: "Romanian Deadlift (RDL)"
+        sets: 3
+        reps: 10
+      - name: "Hamstring Curls"
+        sets: 3
+        reps: 10

@@ -1,5 +1,201 @@
 // Dwayne's Fitness Blog - JavaScript
-// Handles navigation, animations, and interactivity
+// Handles navigation, animations, content loading, and interactivity
+
+// ============================================
+// Content Loading from YAML Files
+// ============================================
+
+// Simple YAML parser for our structured content
+function parseYAML(text) {
+    const lines = text.split('\n');
+    const result = {};
+    let currentKey = null;
+    let currentList = null;
+    let currentListItem = null;
+    let inMultilineString = false;
+    let multilineKey = null;
+    let multilineContent = '';
+    let indentLevel = 0;
+
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const trimmed = line.trim();
+
+        // Skip empty lines and comments
+        if (!trimmed || trimmed.startsWith('#')) {
+            if (inMultilineString && trimmed === '') {
+                multilineContent += '\n';
+            }
+            continue;
+        }
+
+        // Handle multiline strings
+        if (inMultilineString) {
+            const currentIndent = line.search(/\S/);
+            if (currentIndent > indentLevel) {
+                multilineContent += (multilineContent ? '\n' : '') + trimmed;
+                continue;
+            } else {
+                result[multilineKey] = multilineContent.trim();
+                inMultilineString = false;
+            }
+        }
+
+        // Check for multiline indicator
+        if (trimmed.endsWith('|')) {
+            multilineKey = trimmed.slice(0, -1).replace(':', '').trim();
+            multilineContent = '';
+            inMultilineString = true;
+            indentLevel = line.search(/\S/);
+            continue;
+        }
+
+        // Handle list items
+        if (trimmed.startsWith('- ')) {
+            const content = trimmed.slice(2);
+            if (content.includes(':')) {
+                // Object in list
+                const [key, ...valueParts] = content.split(':');
+                const value = valueParts.join(':').trim().replace(/^["']|["']$/g, '');
+                if (!currentList) currentList = [];
+                if (!currentListItem) currentListItem = {};
+                currentListItem[key.trim()] = value;
+            } else {
+                // Simple list item
+                if (!currentList) currentList = [];
+                if (currentListItem && Object.keys(currentListItem).length > 0) {
+                    currentList.push(currentListItem);
+                    currentListItem = {};
+                }
+                currentList.push({ text: content.replace(/^["']|["']$/g, '') });
+            }
+            continue;
+        }
+
+        // Handle object properties inside list items
+        const leadingSpaces = line.search(/\S/);
+        if (leadingSpaces >= 4 && currentListItem) {
+            if (trimmed.includes(':')) {
+                const [key, ...valueParts] = trimmed.split(':');
+                const value = valueParts.join(':').trim().replace(/^["']|["']$/g, '');
+                currentListItem[key.trim()] = value;
+            }
+            continue;
+        }
+
+        // Save current list if we're moving to a new key
+        if (currentList && leadingSpaces === 0 && trimmed.includes(':')) {
+            if (currentListItem && Object.keys(currentListItem).length > 0) {
+                currentList.push(currentListItem);
+                currentListItem = null;
+            }
+            if (currentKey) {
+                result[currentKey] = currentList;
+            }
+            currentList = null;
+        }
+
+        // Handle regular key-value pairs
+        if (trimmed.includes(':') && !trimmed.startsWith('-')) {
+            const colonIndex = trimmed.indexOf(':');
+            const key = trimmed.slice(0, colonIndex).trim();
+            const value = trimmed.slice(colonIndex + 1).trim().replace(/^["']|["']$/g, '');
+
+            if (value === '' && !trimmed.endsWith('|')) {
+                // This is a key for a list or nested object
+                currentKey = key;
+            } else {
+                result[key] = value;
+            }
+        }
+    }
+
+    // Save any remaining list
+    if (currentList) {
+        if (currentListItem && Object.keys(currentListItem).length > 0) {
+            currentList.push(currentListItem);
+        }
+        if (currentKey) {
+            result[currentKey] = currentList;
+        }
+    }
+
+    return result;
+}
+
+// Parse markdown frontmatter
+function parseFrontmatter(text) {
+    const match = text.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+    if (!match) return { data: {}, content: text };
+
+    const frontmatter = parseYAML(match[1]);
+    return {
+        data: frontmatter,
+        content: match[2].trim()
+    };
+}
+
+// Fetch and parse YAML file
+async function loadContent(path) {
+    try {
+        const response = await fetch(path);
+        if (!response.ok) throw new Error(`Failed to load ${path}`);
+        const text = await response.text();
+        return parseYAML(text);
+    } catch (error) {
+        console.warn(`Could not load ${path}:`, error);
+        return null;
+    }
+}
+
+// Fetch and parse Markdown file
+async function loadMarkdown(path) {
+    try {
+        const response = await fetch(path);
+        if (!response.ok) throw new Error(`Failed to load ${path}`);
+        const text = await response.text();
+        return parseFrontmatter(text);
+    } catch (error) {
+        console.warn(`Could not load ${path}:`, error);
+        return null;
+    }
+}
+
+// ============================================
+// Dynamic Content Rendering
+// ============================================
+
+async function loadQuotes() {
+    const data = await loadContent('/content/quotes.yml');
+    if (data && Array.isArray(data.quotes)) {
+        // Replace the quotes array
+        window.dynamicQuotes = data.quotes.map(q => q.text || q);
+        console.log('Loaded quotes:', window.dynamicQuotes);
+    }
+}
+
+async function loadSiteContent() {
+    // Load quotes
+    await loadQuotes();
+
+    // Initialize quote rotation with dynamic quotes
+    if (window.dynamicQuotes && window.dynamicQuotes.length > 0) {
+        rotateQuote(window.dynamicQuotes);
+    } else {
+        rotateQuote(defaultQuotes);
+    }
+}
+
+// ============================================
+// Main Initialization
+// ============================================
+
+const defaultQuotes = [
+    "Stop when you're done, not when you're tired.",
+    "Your mind is the only limit.",
+    "I can do all things through Christ who strengthens me.",
+    "You need discipline, not motivation."
+];
 
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize all functionality
@@ -7,6 +203,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollAnimations();
     initMobileMenu();
     initWorkoutTabs();
+
+    // Load dynamic content
+    loadSiteContent();
 });
 
 // ============================================
@@ -220,18 +419,11 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // ============================================
-// Dwayne's Motivational Quotes
+// Quote Rotation
 // ============================================
-const quotes = [
-    "Stop when you're done, not when you're tired.",
-    "Your mind is the only limit.",
-    "I can do all things through Christ who strengthens me.",
-    "You need discipline, not motivation."
-];
-
-function rotateQuote() {
+function rotateQuote(quotes) {
     const quoteElement = document.querySelector('.quote p');
-    if (quoteElement) {
+    if (quoteElement && quotes && quotes.length > 0) {
         let currentIndex = 0;
 
         setInterval(() => {
@@ -250,6 +442,3 @@ function rotateQuote() {
         quoteElement.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
     }
 }
-
-// Initialize quote rotation
-rotateQuote();
