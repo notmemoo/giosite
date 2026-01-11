@@ -124,6 +124,7 @@ module.exports = async function handler(req, res) {
     });
 
     const { path } = req.query;
+    console.log('Auth Request:', { method: req.method, query: req.query, path });
     const action = Array.isArray(path) ? path[0] : path;
 
     try {

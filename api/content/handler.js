@@ -1,4 +1,4 @@
-const { verifyJWT } = require('./auth/[...path]');
+const { verifyJWT } = require('../auth/[...path]');
 
 // Environment variables
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN || '';
@@ -277,13 +277,11 @@ module.exports = async function handler(req, res) {
     // Authenticate
     const auth = authenticateRequest(req);
     if (!auth.authenticated) {
-        console.log('Content Auth Failed:', auth.error);
         return res.status(401).json({ error: auth.error });
     }
 
     // Parse path
     const { path } = req.query;
-    console.log('Content Request:', { method: req.method, query: req.query, path });
     const segments = Array.isArray(path) ? path : [path];
     const contentType = segments[0];
     const slug = segments[1];
