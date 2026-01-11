@@ -1,13 +1,6 @@
 [build]
   publish = "."
 
-# Redirect /admin to /admin/ to ensure config.yml loads correctly
-[[redirects]]
-  from = "/admin"
-  to = "/admin/"
-  status = 301
-  force = true
-
 # Headers for security
 [[headers]]
   for = "/*"
