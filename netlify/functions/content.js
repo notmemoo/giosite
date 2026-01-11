@@ -42,6 +42,8 @@ function authenticateRequest(event) {
 async function githubRequest(path, options = {}) {
     const url = `${GITHUB_API}/repos/${GITHUB_REPO}${path}`;
 
+    console.log('GitHub API Request:', { url, method: options.method || 'GET' });
+
     const response = await fetch(url, {
         ...options,
         headers: {
@@ -55,6 +57,7 @@ async function githubRequest(path, options = {}) {
 
     if (!response.ok) {
         const error = await response.text();
+        console.error('GitHub API Error:', { status: response.status, error, path });
         throw new Error(`GitHub API error: ${response.status} - ${error}`);
     }
 
