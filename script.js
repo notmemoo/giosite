@@ -174,9 +174,43 @@ async function loadQuotes() {
     }
 }
 
+async function loadAbout() {
+    const data = await loadContent('/content/about.yml');
+    if (data) {
+        // Update title
+        const titleEl = document.getElementById('about-title');
+        if (titleEl && data.title) {
+            titleEl.textContent = data.title;
+        }
+
+        // Update bio - convert newlines to paragraphs
+        const bioEl = document.getElementById('about-bio');
+        if (bioEl && data.bio) {
+            const paragraphs = data.bio.split('\n\n').filter(p => p.trim());
+            bioEl.innerHTML = paragraphs.map(p => `<p>${p.trim()}</p>`).join('');
+        }
+
+        // Update stats
+        const statsEl = document.getElementById('about-stats');
+        if (statsEl && data.stats && Array.isArray(data.stats)) {
+            statsEl.innerHTML = data.stats.map(stat => `
+                <div class="stat">
+                    <span class="stat-number">${stat.number || ''}</span>
+                    <span class="stat-label">${stat.label || ''}</span>
+                </div>
+            `).join('');
+        }
+
+        console.log('Loaded about content');
+    }
+}
+
 async function loadSiteContent() {
-    // Load quotes
-    await loadQuotes();
+    // Load all dynamic content
+    await Promise.all([
+        loadQuotes(),
+        loadAbout()
+    ]);
 
     // Initialize quote rotation with dynamic quotes
     if (window.dynamicQuotes && window.dynamicQuotes.length > 0) {
