@@ -102,7 +102,13 @@ async function sendMagicLinkEmail(email, magicLink) {
           <a href="${magicLink}" style="display: inline-block; background: linear-gradient(135deg, #FF6B35, #FF8F65); color: white; text-decoration: none; padding: 16px 32px; border-radius: 8px; font-weight: 600; margin: 24px 0;">
             Log In to Admin →
           </a>
-          <p style="color: #666; font-size: 14px; margin-top: 32px;">
+          <p style="color: #666; font-size: 14px; margin-top: 24px;">
+            <strong>On mobile?</strong> Copy this link instead:
+          </p>
+          <p style="color: #FF6B35; font-size: 12px; word-break: break-all; background: #f5f5f5; padding: 12px; border-radius: 6px;">
+            ${magicLink}
+          </p>
+          <p style="color: #999; font-size: 12px; margin-top: 32px;">
             If you didn't request this link, you can safely ignore this email.
           </p>
         </div>
