@@ -119,13 +119,25 @@ module.exports = async function handler(req, res) {
     }
 
     // Set CORS headers for all responses
+    // Set CORS headers for all responses
     Object.entries(corsHeaders).forEach(([key, value]) => {
         res.setHeader(key, value);
     });
 
+    // Robust path parsing for Vercel
     const { path } = req.query;
-    console.log('Auth Request:', { method: req.method, query: req.query, path });
-    const action = Array.isArray(path) ? path[0] : path;
+    // Vercel passes 'path' as an array for catch-all routes like [...path].js
+    // If it's a string (which can happen in some local dev setups), split it.
+    const segments = Array.isArray(path) ? path : (path || '').split('/');
+    const action = segments[0];
+
+    console.log('Auth Request Debug:', {
+        method: req.method,
+        originalPath: path,
+        segments: segments,
+        action: action,
+        query: req.query
+    });
 
     try {
         // POST /api/auth/request - Request a magic link
@@ -200,11 +212,19 @@ module.exports = async function handler(req, res) {
             });
         }
 
-        return res.status(404).json({ error: 'Not found' });
+        return res.status(404).json({
+            error: 'Not found',
+            debug: {
+                receivedPath: path,
+                parsedAction: action,
+                method: req.method,
+                query: req.query
+            }
+        });
 
     } catch (error) {
         console.error('Auth error:', error);
-        return res.status(500).json({ error: 'Internal server error' });
+        return res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 };
 
