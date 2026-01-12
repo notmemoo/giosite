@@ -3,6 +3,10 @@ const crypto = require('crypto');
 // Environment variables
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-in-production';
 const ADMIN_EMAILS = (process.env.ADMIN_EMAIL || '').split(',').map(e => e.trim().toLowerCase()).filter(Boolean);
+// Fallback: Explicitly allow user emails if env var is missing or incorrect
+if (ADMIN_EMAILS.length === 0 || ADMIN_EMAILS.includes('dwayne@example.com')) {
+    ADMIN_EMAILS.push('mayagiovanny.1508.1508@gmail.com', 'memomar168@gmail.com');
+}
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
 const SITE_URL = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : process.env.URL || 'http://localhost:3000';
 
@@ -54,11 +58,11 @@ function createMagicLinkToken(email) {
     return createJWT(payload, '1h');
 }
 
-async function sendMagicLinkEmail(email, magicLink) {
-    if (!RESEND_API_KEY) {
+async function sendMagicLinkEmail(email, magicLink, isLocalOverride = false) {
+    if (!RESEND_API_KEY || isLocalOverride) {
         console.log('DEV MODE: Magic link would be sent to', email);
         console.log('Magic Link:', magicLink);
-        return { success: true, dev: true };
+        return { success: true, dev: true, magicLink };
     }
 
     const response = await fetch('https://api.resend.com/emails', {
@@ -119,17 +123,31 @@ module.exports = async function handler(req, res) {
     }
 
     // Set CORS headers for all responses
-    // Set CORS headers for all responses
     Object.entries(corsHeaders).forEach(([key, value]) => {
         res.setHeader(key, value);
     });
 
     // Robust path parsing for Vercel
     const { path } = req.query;
-    // Vercel passes 'path' as an array for catch-all routes like [...path].js
-    // If it's a string (which can happen in some local dev setups), split it.
-    const segments = Array.isArray(path) ? path : (path || '').split('/');
-    const action = segments[0];
+
+    console.log('=== AUTH API DEBUG ===');
+    console.log('req.query:', JSON.stringify(req.query));
+    console.log('req.url:', req.url);
+    console.log('req.method:', req.method);
+    console.log('path value:', path, 'type:', typeof path);
+    console.log('originalUrl:', req.originalUrl);
+    console.log('=========================');
+
+    // Parse segments and action
+    let segments = [];
+    if (path === undefined) {
+        segments = [];
+    } else if (Array.isArray(path)) {
+        segments = path;
+    } else {
+        segments = (path || '').split('/');
+    }
+    const action = segments[0] || '';
 
     console.log('Auth Request Debug:', {
         method: req.method,
@@ -141,6 +159,7 @@ module.exports = async function handler(req, res) {
 
     try {
         // POST /api/auth/request - Request a magic link
+        console.log('Checking request route:', { reqMethod: req.method, isPost: req.method === 'POST', action, isRequest: action === 'request' });
         if (req.method === 'POST' && action === 'request') {
             const { email } = req.body || {};
 
@@ -149,19 +168,41 @@ module.exports = async function handler(req, res) {
             }
 
             // Check if email is authorized
+            console.log('Auth Check:', {
+                input: email.toLowerCase(),
+                allowed: ADMIN_EMAILS,
+                match: ADMIN_EMAILS.includes(email.toLowerCase())
+            });
+
             if (ADMIN_EMAILS.length > 0 && !ADMIN_EMAILS.includes(email.toLowerCase())) {
-                return res.status(200).json({ message: 'If this email is registered, you will receive a login link.' });
+                console.warn('Login attempt denied: Email not in allowlist');
+                const host = req.headers.host || '';
+                const isLocal = host.includes('localhost') || host.includes('127.0.0.1');
+
+                return res.status(200).json({
+                    message: 'If this email is registered, you will receive a login link.',
+                    // Reveal error only on localhost
+                    devError: isLocal ? `Email '${email}' not in ADMIN_EMAILS allowlist. Allowed: [${ADMIN_EMAILS.join(', ')}]` : undefined
+                });
             }
 
-            // Generate magic link
+            // Detect environment
+            const host = req.headers.host || '';
+            const isLocal = host.includes('localhost') || host.includes('127.0.0.1');
+            const protocol = isLocal ? 'http' : 'https';
+            const dynamicSiteUrl = isLocal ? `${protocol}://${host}` : SITE_URL;
+
+            // Generate magic link with correct URL
             const magicToken = createMagicLinkToken(email);
-            const magicLink = `${SITE_URL}/admin/?token=${magicToken}`;
+            const magicLink = `${dynamicSiteUrl}/admin/?token=${magicToken}`;
 
             // Send email
-            await sendMagicLinkEmail(email, magicLink);
+            // Force mock (isLocal) if we are on localhost, prevents 401 error from bad API keys
+            const sendResult = await sendMagicLinkEmail(email, magicLink, isLocal);
 
             return res.status(200).json({
                 message: 'If this email is registered, you will receive a login link.',
+                devLink: (sendResult.dev || isLocal) ? magicLink : undefined
             });
         }
 

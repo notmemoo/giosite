@@ -1024,10 +1024,19 @@
                 headers,
             });
 
-            const data = await response.json();
+            const text = await response.text();
+            let data;
+            try {
+                data = JSON.parse(text);
+            } catch (e) {
+                console.error('API Invalid JSON:', text.substring(0, 100)); // Log first 100 chars
+                throw new Error(`Invalid server response (not JSON): ${response.status} ${response.statusText}`);
+            }
 
             if (!response.ok) {
-                throw new Error(data.error || 'Request failed');
+                const errorMsg = data.details ? `${data.error}: ${data.details}` : (data.error || `Request failed (${response.status})`);
+                console.error('API Error:', response.status, response.statusText, data);
+                throw new Error(errorMsg);
             }
 
             return data;
@@ -1109,6 +1118,15 @@
 
                 messageEl.className = 'login-message success';
                 messageEl.textContent = '✨ Check your email for the login link!';
+
+                // In dev mode, show the link or error
+                if (data.devLink) {
+                    console.log('Dev link:', data.devLink);
+                    messageEl.innerHTML += `<br><br><small style="opacity:0.8; word-break:break-all; background:rgba(255,255,255,0.1); padding:8px; border-radius:4px; display:block;">Dev Link: <a href="${data.devLink}" style="color:var(--accent); text-decoration:underline;">Click here to login</a></small>`;
+                } else if (data.devError) {
+                    messageEl.className = 'login-message error'; // Change to error style
+                    messageEl.innerHTML = `<strong>Login Ignored (Dev Mode)</strong><br>${data.devError}`;
+                }
                 messageEl.style.display = 'block';
 
                 // In dev mode, show the link
@@ -1118,7 +1136,13 @@
                 }
             } catch (error) {
                 messageEl.className = 'login-message error';
-                messageEl.textContent = error.message;
+                // Check if the error message is a JSON string (our debug info)
+                try {
+                    const debugObj = JSON.parse(error.message);
+                    messageEl.innerHTML = `<strong>Error ${debugObj.error}</strong><pre style="text-align:left; font-size:10px; margin-top:8px; overflow-x:auto;">${JSON.stringify(debugObj, null, 2)}</pre>`;
+                } catch (e) {
+                    messageEl.textContent = error.message;
+                }
                 messageEl.style.display = 'block';
             } finally {
                 setLoading(loginBtn, false);

@@ -1,6 +1,7 @@
-const { verifyJWT } = require('../auth/[...path]');
+const crypto = require('crypto');
 
 // Environment variables
+const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-in-production';
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN || '';
 const GITHUB_REPO = process.env.GITHUB_REPO || 'owner/repo';
 const GITHUB_BRANCH = process.env.GITHUB_BRANCH || 'main';
@@ -12,6 +13,30 @@ const corsHeaders = {
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
 };
+
+// Helper: Verify JWT (Inlined to avoid module resolution issues)
+function verifyJWT(token) {
+    try {
+        const [headerB64, payloadB64, signature] = token.split('.');
+        const expectedSig = crypto
+            .createHmac('sha256', JWT_SECRET)
+            .update(`${headerB64}.${payloadB64}`)
+            .digest('base64url');
+
+        if (signature !== expectedSig) {
+            return { valid: false, error: 'Invalid signature' };
+        }
+
+        const payload = JSON.parse(Buffer.from(payloadB64, 'base64url').toString());
+        if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
+            return { valid: false, error: 'Token expired' };
+        }
+
+        return { valid: true, payload };
+    } catch (error) {
+        return { valid: false, error: 'Invalid token format' };
+    }
+}
 
 // Authenticate request
 function authenticateRequest(req) {
