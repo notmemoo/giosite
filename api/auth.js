@@ -8,7 +8,7 @@ if (ADMIN_EMAILS.length === 0 || ADMIN_EMAILS.includes('dwayne@example.com')) {
     ADMIN_EMAILS.push('mayagiovanny.1508.1508@gmail.com', 'memomar168@gmail.com');
 }
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
-const SITE_URL = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : process.env.URL || 'http://localhost:3000';
+const SITE_URL = process.env.SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
 
 // Simple JWT implementation
 function createJWT(payload, expiresIn = '7d') {
